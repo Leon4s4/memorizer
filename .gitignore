@@ -12,8 +12,8 @@ out/
 # models/*.gguf
 # models/*.bin
 
-# Data
-data/
+# Data (runtime data directory, not source code)
+/data/
 *.db
 *.sqlite
 *.sqlite3
