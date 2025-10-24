@@ -31,20 +31,31 @@ A fully self-contained C# version of Memorizer that runs in a single Docker cont
 
 ## Quick Start
 
-### Prerequisites
-
-- Docker installed
-- 8GB RAM recommended
-- Internet connection (only for building)
-
-### Build and Run
-
-**✅ Models are included in the repository (~680MB) - NO download needed!**
+### Option 1: Pull from Docker Hub (Easiest)
 
 ```bash
-# Navigate to memorizer-self
-cd memorizer-self
+# Pull the latest image
+docker pull leon4s4/memorizer:latest
 
+# Run the container
+docker run -d \
+  -p 9000:8000 \
+  -v memorizer-data:/app/data \
+  --name memorizer \
+  leon4s4/memorizer:latest
+
+# Check health
+curl http://localhost:9000/healthz
+```
+
+### Option 2: Build from Source
+
+**Prerequisites:**
+- Docker installed
+- 8GB RAM recommended
+- Models are included in the repository (~680MB) - NO download needed!
+
+```bash
 # Build Docker image (models already in repo!)
 docker-compose build
 
