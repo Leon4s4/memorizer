@@ -21,6 +21,21 @@ on:
   release:
     types: [created]
   workflow_dispatch:  # Allow manual trigger
+    inputs:
+      push_to_registries:
+        description: 'Push to Docker registries?'
+        required: false
+        default: 'true'
+        type: boolean
+      run_tests:
+        description: 'Run health check tests?'
+        required: false
+        default: 'true'
+        type: boolean
+      custom_tag:
+        description: 'Custom tag (optional, e.g., "v1.0.0", "test")'
+        required: false
+        type: string
 
 env:
   GHCR_IMAGE: ghcr.io/leon4s4/memorizer
@@ -70,6 +85,7 @@ jobs:
             type=semver,pattern={{major}}
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ inputs.custom_tag }},enable=${{ inputs.custom_tag != '' }}
 
       - name: Download models
         run: |
@@ -85,14 +101,14 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64  # x64 only - LLamaSharp limitation
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ (github.event_name != 'pull_request') && (inputs.push_to_registries != false) }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Test Docker image
-        if: github.event_name == 'pull_request' || github.event_name == 'push'
+        if: (github.event_name == 'pull_request' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (inputs.run_tests != false)
         run: |
           echo "Starting container for health check..."
           # Use the first tag from the metadata output
