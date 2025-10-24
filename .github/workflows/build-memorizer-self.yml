@@ -24,7 +24,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/memorizer-self
+  IMAGE_NAME: leon4s4/memorizer-self
 
 jobs:
   build:
@@ -86,9 +86,12 @@ jobs:
         if: github.event_name == 'pull_request' || github.event_name == 'push'
         run: |
           echo "Starting container for health check..."
+          # Use the first tag from the metadata output
+          IMAGE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | head -n 1)
+          echo "Using image: $IMAGE_TAG"
           docker run -d --name test-memorizer-self \
             -p 9000:8000 \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
+            "$IMAGE_TAG"
 
           echo "Waiting for service to start..."
           sleep 15
