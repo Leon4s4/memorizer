@@ -1,0 +1,24 @@
+# Models Directory
+
+This directory should contain the AI models for Memorizer Self-Contained.
+
+## Required Models:
+
+1. `all-MiniLM-L6-v2.gguf` (~90MB) - Embedding model
+2. `tinyllama-1.1b-chat.gguf` (~600MB) - LLM model
+
+## Download:
+
+Run the download script from the parent directory:
+
+```bash
+cd ..
+./download-models.sh
+```
+
+This will download both models into this directory.
+
+## Note:
+
+The actual .gguf files are NOT committed to git (too large).
+Only this .gitkeep file is tracked to preserve the directory structure.

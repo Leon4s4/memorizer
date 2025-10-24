@@ -1,0 +1,44 @@
+version: '3.8'
+
+# Air-gapped C# self-contained deployment
+# All models bundled in container during build
+
+services:
+  memorizer-self:
+    platform: linux/amd64  # Force x64 - LLamaSharp does not have ARM64 Linux binaries yet
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: memorizer-self:latest
+    container_name: memorizer-self
+    restart: unless-stopped
+    ports:
+      - "9000:8000"  # API (host:container)
+    volumes:
+      - memorizer-self-data:/app/data
+      - memorizer-self-logs:/app/logs
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8000
+      - ModelsPath=/app/models
+      - DataPath=/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s  # Longer start period for model loading
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '2'
+          memory: 4G
+
+volumes:
+  memorizer-self-data:
+    driver: local
+  memorizer-self-logs:
+    driver: local
