@@ -6,10 +6,8 @@ version: '3.8'
 services:
   memorizer-self:
     platform: linux/amd64  # Force x64 - LLamaSharp does not have ARM64 Linux binaries yet
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: memorizer-self:latest
+    # Pull from Docker Hub instead of building locally
+    image: leonasa/memorizer:latest
     container_name: memorizer-self
     restart: unless-stopped
     ports:
