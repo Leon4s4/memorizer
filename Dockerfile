@@ -6,6 +6,9 @@ WORKDIR /src
 # Disable central package management for this build
 RUN echo '<Project><PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally></PropertyGroup></Project>' > Directory.Build.props
 
+# Cache bust - forces rebuild when code changes
+ARG CACHEBUST=1
+
 COPY src/Memorizer.Self/Memorizer.Self.csproj .
 RUN dotnet restore
 
