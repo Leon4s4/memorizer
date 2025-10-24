@@ -19,7 +19,7 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
 
-        <!-- LLamaSharp for LLM and embeddings (using 0.18.0 for better platform support) -->
+        <!-- LLamaSharp for LLM (using 0.18.0 for better platform support) -->
         <PackageReference Include="LLamaSharp" Version="0.18.0" />
         <PackageReference Include="LLamaSharp.Backend.Cpu" Version="0.18.0" />
 

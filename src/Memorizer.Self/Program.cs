@@ -43,10 +43,8 @@ builder.Services.AddSingleton(sp =>
     return new SqliteVectorDb(dbPath, logger);
 });
 
-// Register services
-// NOTE: Using SimpleEmbeddingService instead of LLamaEmbeddingService because
-// all-MiniLM-L6-v2 is not compatible with LLamaSharp (it's a sentence-transformer model, not a Llama model)
-// SimpleEmbeddingService provides deterministic hash-based embeddings that work for similarity search
+// Register improved SimpleEmbeddingService
+// Uses word-based hashing with TF weighting for better semantic similarity
 builder.Services.AddSingleton<IEmbeddingService>(sp =>
 {
     var logger = sp.GetRequiredService<ILogger<SimpleEmbeddingService>>();
