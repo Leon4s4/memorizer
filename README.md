@@ -35,14 +35,14 @@ A fully self-contained C# version of Memorizer that runs in a single Docker cont
 
 ```bash
 # Pull the latest image
-docker pull leon4s4/memorizer:latest
+docker pull leonasa/memorizer:latest
 
 # Run the container
 docker run -d \
   -p 9000:8000 \
   -v memorizer-data:/app/data \
   --name memorizer \
-  leon4s4/memorizer:latest
+  leonasa/memorizer:latest
 
 # Check health
 curl http://localhost:9000/healthz

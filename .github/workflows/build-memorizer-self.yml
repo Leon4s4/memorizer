@@ -40,7 +40,7 @@ on:
 
 env:
   GHCR_IMAGE: ghcr.io/leon4s4/memorizer
-  DOCKERHUB_IMAGE: leon4s4/memorizer
+  DOCKERHUB_IMAGE: leonasa/memorizer
 
 jobs:
   build:
