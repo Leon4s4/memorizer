@@ -12,6 +12,9 @@ ARG CACHEBUST=1
 COPY src/Memorizer.Self/Memorizer.Self.csproj .
 RUN dotnet restore
 
+# Use CACHEBUST right before copying source to invalidate cache
+RUN echo "Cache bust: $CACHEBUST"
+
 COPY src/Memorizer.Self/ .
 RUN dotnet publish -c Release -o /app/publish
 
