@@ -71,6 +71,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Debug - Check push condition
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Push to registries input: ${{ inputs.push_to_registries }}"
+          echo "Will push: ${{ github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || inputs.push_to_registries != false) }}"
+          echo "Docker Hub username set: ${{ secrets.DOCKERHUB_USERNAME != '' }}"
+
       - name: Extract metadata (tags, labels)
         id: meta
         uses: docker/metadata-action@v5
@@ -102,7 +109,7 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64  # x64 only - LLamaSharp limitation
-          push: ${{ (github.event_name != 'pull_request') && (inputs.push_to_registries != false) }}
+          push: ${{ github.event_name != 'pull_request' && (github.event_name != 'workflow_dispatch' || inputs.push_to_registries != false) }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
