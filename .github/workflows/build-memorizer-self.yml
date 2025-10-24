@@ -1,4 +1,5 @@
 name: Build Memorizer Self-Contained
+# Publishes to both Docker Hub (leon4s4/memorizer) and GHCR (ghcr.io/leon4s4/memorizer)
 
 on:
   push:
